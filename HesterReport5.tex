@@ -127,8 +127,7 @@ def plot ( X, y, y_hat, w_lin , turn=0 ):
     plt.xlabel ( 'x' )
     plt.xlim ( -2, 10 )
     plt.ylim ( 0, 120 )
-    fig.savefig ( "run%d.png" % turn )
-
+    #fig.savefig ( "run%d.png" % turn )
 
 def get_MSE ( y, y_hat, w_norm, lam=1 ):
     total = 0
@@ -136,17 +135,32 @@ def get_MSE ( y, y_hat, w_norm, lam=1 ):
         total += ( y [i] - y_hat [i] )**2
     return total / y.size + ( lam * w_norm )
 
-def validate ( X, y, turn=0 ):
+def validate ( X, y, turn=0 , lam=1 ):
 
     if ( turn == 0 ):
-        return linear_regression ( X [:8], y [:8])
+        
+        Xt, w_lin = linear_regression ( X [:8], y [:8])
+        y_hat = get_estimated_y (X, w_lin)
+        w_norm = np.dot ( w_lin.T, w_lin )
+        print( "lambda = ", lam )
+        print("MSE turn ", turn+1, " = ", get_MSE (y, y_hat, w_norm, lam ))
+        return Xt, w_lin
     if ( turn == 1 ):
         middle = X[:4] + X[8:12]
         ymiddle = y[:4] +  y[8:12]
-        return linear_regression ( middle, ymiddle )
-        return "asdf", ":asdf"
+        Xt, w_lin = linear_regression ( middle, ymiddle )
+        y_hat = get_estimated_y (X, w_lin)
+        w_norm = np.dot ( w_lin.T, w_lin )
+        print( "lambda = ", lam )
+        print("MSE turn ", turn+1, " = ", get_MSE (y, y_hat, w_norm , lam ))
+        return Xt, w_lin
     if ( turn == 2 ):
-        return linear_regression ( X [4:], y [4:] )
+        Xt, w_lin = linear_regression ( X [4:], y [4:] )
+        y_hat = get_estimated_y (X, w_lin)
+        w_norm = np.dot ( w_lin.T, w_lin )
+        print( "lambda = ", lam )
+        print("MSE turn ", turn+1, " = ", get_MSE (y, y_hat, w_norm, lam ))
+        return Xt, w_lin
     
 def regularize_ridge ( X, y, y_hat, w_lin, lam=1 ):
     w_norm = np.dot ( w_lin.T, w_lin )
@@ -170,19 +184,22 @@ def run ():
     y_hat = get_estimated_y ( X, w_lin )
     plot ( X1d, y, y_hat , w_lin )
     # Regularize and Validate
+    w_norm = np.dot ( w_lin.T, w_lin )
+    print ( "MSE = ", get_MSE(y, y_hat, w_norm, 0.1 ))
     print_results ( X1d, y, y_hat, w_lin )
-    for i in range(3):
-        print ( "---------------------------------------------------" )
-        print ( "Validation", i+1 )
-        Xt, w_lin = validate ( X, y, i )
-        print( w_lin )
-        y_hat = get_estimated_y ( X, w_lin )
-        plot ( X1d, y, y_hat , w_lin, i+1 )
-        print_results ( X1d, y, y_hat, w_lin )
+    for j in [ 0.1, 1, 10, 100 ]:
+        for i in range(3):
+            print ( "---------------------------------------------------" )
+            print ( "Validation", i+1 )
+            Xt, w_lin = validate ( X, y, i, j )
+            print( w_lin )
+            y_hat = get_estimated_y ( X, w_lin )
+            plot ( X1d, y, y_hat , w_lin, i+1 )
+            print_results ( X1d, y, y_hat, w_lin )
 
 
 run ()
-plt.show ()
+#plt.show ()
 
 
 \end{lstlisting}
@@ -214,7 +231,7 @@ plt.show ()
 \end{tabular}
 \end{center}
 
-\textbf{b)} The equation of the line obtained in part (1) is: $$y = 8 x  + 8$$ \\
+\textbf{b)} The equation of the line obtained in part (1) is: $$y = 8 x  + 8$$ 
 
 \textbf{c)} For the following data: turn 1 is the first 8 points, turn 2 is all but the middle 4 points, and turn 3 is the last 8 points. 
 I know there are 13 points total, but 13 is prime and we can ignore 1 here or there. \\
@@ -242,7 +259,7 @@ MSE turn  3  =  52276.7 \\
 \textbf{d)} I chose $\lambda$ = 0.1 because it gives the lowest MSE (besides zero). I do not really see the point of regularization 
 when using linear regression. Linear regression is a non-iterative process, and it does not use MSE or SSE when obtaining a weight vector. \\
 
-\textbf{e)} Our final equation of the line is: $$y = 12 x  - 19.3$$ \\
+\textbf{e)} Our final equation of the line is: $$y = 7 x  + 15$$ \\
 
 
 \subsection*{Example Run}
@@ -396,166 +413,7 @@ Equation of linear regression line:  y =  12.0 *x +  -19.0
 
 
 \newpage
-\section*{Variations}
-\subsection*{8) Initial Choice of Weights}
-Step size, $c = 0.01$.
 
-\subsubsection*{Zeros}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{Zeros}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	37 & 0 \\
-	14 & 1\\
-	91 & 0 \\
-	9 & 0\\
-	46 & 0\\
-	\hline
-\end{tabular}
-\end{center}
-Our ``control." Weights initialized at zeros gives the quickest, most accurate results. \\
-
-\subsubsection*{Ones}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{Ones}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	258 & 1 \\
-	225 & 0\\
-	224 & 0 \\
-	230 & 2\\
-	376 & 0\\
-	\hline
-\end{tabular}
-\end{center}
-Weights initialized at ones takes much longer, with similar accuracy. \\
-
-\subsubsection*{random.uniform(-1,1)}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{random.uniform(-1,1)}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	45 & 1 \\
-	185 & 0\\
-	122 & 1 \\
-	94 & 4\\
-	203 & 3\\
-	\hline
-\end{tabular}
-\end{center}
-Randomly chosen weights run somewhere in between, with much lower accuracy. \\
-
-\newpage
-\subsection*{9) Initial Choice of Step Size Constant (c)}
-Weights initialized at zeros. Step size matters less than you'd think because the Perceptron line is drawn 
-depending on the ratio the weights rather than the values themselves.
-
-
-\subsubsection*{Step size: 0.01}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{c=0.01}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	15 & 0 \\
-	31 & 0\\
-	27 & 2 \\
-	30 & 0\\
-	80 & 1\\
-	\hline
-\end{tabular}
-\end{center}
-Our ``control." Quick results, fairly accurate.
-
-
-\subsubsection*{Step size: 0.1}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{c=0.1}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	27 & 0 \\
-	165 & 0\\
-	335 & 0 \\
-	13 & 1\\
-	16 & 0\\
-	\hline
-\end{tabular}
-\end{center}
-May take much longer, however very accurate.
-
-\subsubsection*{Step size: 1.0}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{c=1.0}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	7 & 1 \\
-	94 & 0\\
-	33 & 1 \\
-	20 & 1\\
-	133 & 2\\
-	\hline
-\end{tabular}
-\end{center}
-Usually quick, but not as accurate.
-
-\newpage
-\subsection*{10) Order of Picking Points}
-Weights initialized at zeros. Step size, $c = 0.01$.
-
-
-\subsubsection*{Random Misclassified Point}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{Random}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	21 & 0 \\
-	19 & 0\\
-	45 & 0 \\
-	19 & 3\\
-	64 & 0\\
-	\hline
-\end{tabular}
-\end{center}
-Our ``control." Quick results, fairly accurate.
-
-
-\subsubsection*{First Misclassified Point}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{First Point}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	25 & 1 \\
-	77 & 0\\
-	17 & 0 \\
-	21 & 1\\
-	341 & 0\\
-	\hline
-\end{tabular}
-\end{center}
-May take much longer due to an outlier, however very accurate.
-
-\subsubsection*{Last Misclassified Point}
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\multicolumn{2}{|c|}{\textbf{Last Point}} \\\hline
-	\textbf{Iterations} & \textbf{Misclassified Test Pts} \\\hline
-	47 & 0 \\
-	45 & 1\\
-	20 & 2 \\
-	45 & 1\\
-	60 & 1\\
-	\hline
-\end{tabular}
-\end{center}
-Very steady quickness, but not as accurate.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
