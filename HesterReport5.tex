@@ -236,36 +236,32 @@ run ()
 \textbf{c)} For the following data: turn 1 is the first 8 points, turn 2 is all but the middle 4 points, and turn 3 is the last 8 points. 
 I know there are 13 points total, but 13 is prime and we can ignore 1 here or there. \\
 
- $\lambda = 0.1$ \\
- MSE turn  1  =  746.8 \\
-MSE turn  2  =  204.4 \\
-MSE turn  3  =  550.7 \\
+ $\lambda = 0.1$  \hspace{20em} $\lambda = 1$ \\
+ MSE turn  1  =  746.262661375  \hspace{10em} MSE turn  1  =  842.139472172 \\
+MSE turn  2  =  197.356271565  \hspace{10em} MSE turn  2  =  328.670923052 \\
+MSE turn  3  =  523.109196851  \hspace{10em} MSE turn  3  = 546.035469641  \\
+$E_{c.v.} =  488.909376597$  \hspace{13em} $E_{c.v.} =  572.281954955$ \\
 
- $\lambda = 1$ \\
-MSE turn  1  =  907.0 \\
-MSE turn  2  =  451.0 \\
-MSE turn  3  =  1016.7 \\
 
- $\lambda = 10$ \\
-MSE turn  1  =  2509.0 \\
-MSE turn  2  =  2917.0 \\
-MSE turn  3  =  5676.7 \\
+ $\lambda = 10$  \hspace{20em}  $\lambda =100$ \\
+MSE turn  1  =  1182.93732293  \hspace{10em} MSE turn  1  =  2141.77756418 \\
+MSE turn  2  =  1232.34933626  \hspace{10em} MSE turn  2  =  5683.71920214 \\
+MSE turn  3  =  1058.17326210  \hspace{10em} MSE turn  3  =  5620.29574743 \\
+$E_{c.v.} =  1157.81997376$  \hspace{13em} $E_{c.v.} =  4481.93083792$ \\
 
- $\lambda =100$ \\
-MSE turn  1  =  18529.0 \\
-MSE turn  2  =  27577.0 \\
-MSE turn  3  =  52276.7 \\
 
-\textbf{d)} I chose $\lambda$ = 0.1 because it gives the lowest MSE (besides zero). I do not really see the point of regularization 
-when using linear regression. Linear regression is a non-iterative process, and it does not use MSE or SSE when obtaining a weight vector. \\
+\textbf{d)} I chose $\lambda$ = 0.1 because it gives the lowest MSE (besides zero). Running ridge regularization on X over Y using $\lambda = 0.1$ gives:  \\
 
-\textbf{e)} Our final equation of the line is: $$y = 7 x  + 15$$ \\
+\textbf{e)} Our final equation of the line is: $$y = 8 x  + 8$$ \\
+From $w = [ 7.88759553,  8.01293266] $
 
 
 \subsection*{Example Run}
 Here is example output of a run of 3-fold validation
 
-\begin{lstlisting}[breaklines=true,basicstyle=\small]MSE =  166.8
+\begin{lstlisting}[breaklines=true,basicstyle=\small]
+Non-regularized Linear Regression
+MSE =  166.8
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
 Wlin =	 [ 8.  8.]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
@@ -275,142 +271,173 @@ Equation of linear regression line:  y =  8.0 *x +  8.0
 ---------------------------------------------------
 Validation 1
 lambda =  0.1
-MSE turn  1  =  746.8
-[ 13.   3.]
+Eval	= 746.262661375
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 13.   3.]
+Wlin =	 [ 12.78259094   3.03841778]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
 y^ =	 [  7.  10.  13.  16.  19.  22.  25.  28.  31.  34.  37.  40.  43.]
 Equation of linear regression line:  y =  3.0 *x +  13.0
+[ 12.78259094   3.03841778]
 ---------------------------------------------------
 Validation 2
 lambda =  0.1
-MSE turn  2  =  204.4
-[ 15.   7.]
+Eval	= 197.356271565
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 15.   7.]
+Wlin =	 [ 14.1697503    7.21191107]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  1.   8.  15.  22.  29.  36.  43.  50.  57.  64.  71.  78.  85.]
-Equation of linear regression line:  y =  7.0 *x +  15.0
+y^ =	 [ -0.   7.  14.  21.  29.  36.  43.  50.  57.  65.  72.  79.  86.]
+Equation of linear regression line:  y =  7.1978021978 *x +  14.2087912088
+[ 14.1697503    7.21191107]
 ---------------------------------------------------
 Validation 3
 lambda =  0.1
-MSE turn  3  =  550.777777778
-[-19.33333333  12.        ]
+Eval	= 523.109196851
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [-19.33333333  12.        ]
+Wlin =	 [-17.93961782  11.8009356 ]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [ -43.  -31.  -19.   -7.    5.   17.   29.   41.   53.   65.   77.   89.
-  101.]
-Equation of linear regression line:  y =  12.0 *x +  -19.0
+y^ =	 [ -42.  -30.  -18.   -6.    6.   17.   29.   41.   53.   65.   76.   88.
+  100.]
+Equation of linear regression line:  y =  11.8076923077 *x +  -18.0769230769
+[-17.93961782  11.8009356 ]
+---------------------------------------------------
+lambda  =  0.1
+E _ c.v.=  488.909376597
+---------------------------------------------------
 ---------------------------------------------------
 Validation 1
 lambda =  1
-MSE turn  1  =  907.0
-[ 13.   3.]
+Eval	= 842.139472172
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 13.   3.]
+Wlin =	 [ 11.1308642    3.31851852]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  7.  10.  13.  16.  19.  22.  25.  28.  31.  34.  37.  40.  43.]
-Equation of linear regression line:  y =  3.0 *x +  13.0
+y^ =	 [  4.   8.  11.  14.  18.  21.  24.  28.  31.  34.  38.  41.  44.]
+Equation of linear regression line:  y =  3.32967032967 *x +  10.989010989
+[ 11.1308642    3.31851852]
 ---------------------------------------------------
 Validation 2
 lambda =  1
-MSE turn  2  =  451.0
-[ 15.   7.]
+Eval	= 328.670923052
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 15.   7.]
+Wlin =	 [ 9.82278481  8.30379747]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  1.   8.  15.  22.  29.  36.  43.  50.  57.  64.  71.  78.  85.]
-Equation of linear regression line:  y =  7.0 *x +  15.0
+y^ =	 [ -7.   2.  10.  18.  26.  35.  43.  51.  60.  68.  76.  85.  93.]
+Equation of linear regression line:  y =  8.31318681319 *x +  9.82417582418
+[ 9.82278481  8.30379747]
 ---------------------------------------------------
 Validation 3
 lambda =  1
-MSE turn  3  =  1016.77777778
-[-19.33333333  12.        ]
+Eval	= 546.035469641
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [-19.33333333  12.        ]
+Wlin =	 [-10.67023555  10.75374732]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [ -43.  -31.  -19.   -7.    5.   17.   29.   41.   53.   65.   77.   89.
-  101.]
-Equation of linear regression line:  y =  12.0 *x +  -19.0
+y^ =	 [-32. -21. -11.   0.  11.  22.  32.  43.  54.  65.  75.  86.  97.]
+Equation of linear regression line:  y =  10.7417582418 *x +  -10.5824175824
+[-10.67023555  10.75374732]
+---------------------------------------------------
+lambda  =  1
+E _ c.v.=  572.281954955
+---------------------------------------------------
 ---------------------------------------------------
 Validation 1
 lambda =  10
-MSE turn  1  =  2509.0
-[ 13.   3.]
+Eval	= 1182.93732293
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 13.   3.]
+Wlin =	 [ 5.16845878  3.91397849]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  7.  10.  13.  16.  19.  22.  25.  28.  31.  34.  37.  40.  43.]
-Equation of linear regression line:  y =  3.0 *x +  13.0
+y^ =	 [ -3.   1.   5.   9.  13.  17.  21.  25.  29.  33.  36.  40.  44.]
+Equation of linear regression line:  y =  3.91758241758 *x +  5.0989010989
+[ 5.16845878  3.91397849]
 ---------------------------------------------------
 Validation 2
 lambda =  10
-MSE turn  2  =  2917.0
-[ 15.   7.]
+Eval	= 1232.34933626
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 15.   7.]
+Wlin =	 [ 4.05839416  9.40145985]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  1.   8.  15.  22.  29.  36.  43.  50.  57.  64.  71.  78.  85.]
-Equation of linear regression line:  y =  7.0 *x +  15.0
+y^ =	 [-15.  -5.   4.  13.  23.  32.  42.  51.  60.  70.  79.  89.  98.]
+Equation of linear regression line:  y =  9.40659340659 *x +  3.98901098901
+[ 4.05839416  9.40145985]
 ---------------------------------------------------
 Validation 3
 lambda =  10
-MSE turn  3  =  5676.77777778
-[-19.33333333  12.        ]
+Eval	= 1058.1732621
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [-19.33333333  12.        ]
+Wlin =	 [-1.24726477  9.2166302 ]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [ -43.  -31.  -19.   -7.    5.   17.   29.   41.   53.   65.   77.   89.
-  101.]
-Equation of linear regression line:  y =  12.0 *x +  -19.0
+y^ =	 [-20. -10.  -1.   8.  17.  26.  36.  45.  54.  63.  72.  82.  91.]
+Equation of linear regression line:  y =  9.20879120879 *x +  -1.21978021978
+[-1.24726477  9.2166302 ]
+---------------------------------------------------
+lambda  =  10
+E _ c.v.=  1157.81997376
+---------------------------------------------------
 ---------------------------------------------------
 Validation 1
 lambda =  100
-MSE turn  1  =  18529.0
-[ 13.   3.]
+Eval	= 2141.77756418
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 13.   3.]
+Wlin =	 [ 1.07189542  2.01960784]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  7.  10.  13.  16.  19.  22.  25.  28.  31.  34.  37.  40.  43.]
-Equation of linear regression line:  y =  3.0 *x +  13.0
+y^ =	 [ -3.  -1.   1.   3.   5.   7.   9.  11.  13.  15.  17.  19.  21.]
+Equation of linear regression line:  y =  2.0 *x +  1.0
+[ 1.07189542  2.01960784]
 ---------------------------------------------------
 Validation 2
 lambda =  100
-MSE turn  2  =  27577.0
-[ 15.   7.]
+Eval	= 5683.71920214
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [ 15.   7.]
+Wlin =	 [ 2.02863962  7.08353222]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [  1.   8.  15.  22.  29.  36.  43.  50.  57.  64.  71.  78.  85.]
-Equation of linear regression line:  y =  7.0 *x +  15.0
+y^ =	 [-12.  -5.   2.   9.  16.  23.  30.  37.  45.  52.  59.  66.  73.]
+Equation of linear regression line:  y =  7.10989010989 *x +  1.94505494505
+[ 2.02863962  7.08353222]
 ---------------------------------------------------
 Validation 3
 lambda =  100
-MSE turn  3  =  52276.7777778
-[-19.33333333  12.        ]
+Eval	= 5620.29574743
 X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
-Wlin =	 [-19.33333333  12.        ]
+Wlin =	 [ 0.74157303  7.28089888]
 y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
   110.]
-y^ =	 [ -43.  -31.  -19.   -7.    5.   17.   29.   41.   53.   65.   77.   89.
-  101.]
-Equation of linear regression line:  y =  12.0 *x +  -19.0
+y^ =	 [-14.  -7.   1.   8.  15.  23.  30.  37.  44.  52.  59.  66.  74.]
+Equation of linear regression line:  y =  7.3021978022 *x +  0.637362637363
+[ 0.74157303  7.28089888]
+---------------------------------------------------
+lambda  =  100
+E _ c.v.=  4481.93083792
+---------------------------------------------------
+lambda  =  0.1
+E _ c.v.=  488.909376597
+lambda  =  1
+E _ c.v.=  572.281954955
+lambda  =  10
+E _ c.v.=  1157.81997376
+lambda  =  100
+E _ c.v.=  4481.93083792
+---------------------------------------------------
+We chose lambda =  0.1
+X =	 [-2 -1  0  1  2  3  4  5  6  7  8  9 10]
+Wlin =	 [ 7.88759553  8.01293266]
+y  =	 [  14.   11.   10.   11.   14.   19.   26.   35.   46.   59.   74.   91.
+  110.]
+y^ =	 [ -8.  -0.   8.  16.  24.  32.  40.  48.  56.  64.  72.  80.  88.]
+Equation of linear regression line:  y =  8.0 *x +  8.0
+Eval	= 166.642125313
 \end{lstlisting}
 
-
+p.s. Both graphs looked the same. They differ very minutely.
+MSE of original differs from our last one by only 0.2. The ridge regression actually beats standard linear regression on MSE by a whopping 0.2.
 
 \newpage
 
